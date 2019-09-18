@@ -1,0 +1,41 @@
+<%= form_for @changeset, @action, fn f -> %>
+  <%= if @changeset.action do %>
+    <div class="alert alert-danger">
+      <p>Oops, something went wrong! Please check the errors below.</p>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= label f, :name, class: "control-label" %>
+    <%= text_input f, :name, class: "form-control" %>
+    <%= error_tag f, :name %>
+  </div>
+  <div class="form-group">
+    <%= label f, :url, class: "control-label" %>
+    <%= text_input f, :url, class: "form-control" %>
+    <%= error_tag f, :url %>
+  </div>
+  <div class="form-group">
+    <%= label f, :css_selector, class: "control-label" %>
+    <%= text_input f, :css_selector, class: "form-control" %>
+    <%= error_tag f, :css_selector %>
+  </div>
+  <div class="form-group">
+    <%= label f, :live, class: "control-label" %>
+    <%= checkbox f, :live, class: "form-control" %>
+    <%= error_tag f, :live %>
+  </div>
+  <div class="form-group">
+    <%= label f, :text_only, class: "control-label" %>
+    <%= checkbox f, :text_only, class: "form-control" %>
+    <%= error_tag f, :text_only %>
+  </div>
+  <div class="form-group">
+    <%= label f, :polling_frequency, class: "control-label" %>
+    <%= select f, :polling_frequency, @polling_frequency_options, class: "form-control" %>
+    <%= error_tag f, :polling_frequency %>
+  </div>
+  <div class="form-group">
+    <%= submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>

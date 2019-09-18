@@ -1,0 +1,59 @@
+<% date_time_format = "%Y-%m-%d %H:%M:%S" %>
+<% latest_change = List.first(@page.page_changes) %>
+
+<h4>Page Details
+  <span><%= link "Edit", to: page_path(@conn, :edit, @page), class: "btn btn-default btn-xs" %></span>
+  <span><%= link "Back", to: page_path(@conn, :index), class: "btn btn-default btn-xs" %></span>
+</h4>
+
+<ul>
+  <li>
+    <strong>Name:</strong>
+    <%= @page.name %>
+  </li>
+  <li>
+    <strong>URL:</strong>
+    <%= @page.url %>
+  </li>
+  <li>
+    <strong>CSS Selector:</strong>
+    <%= @page.css_selector %>
+  </li>
+  <li>
+    <strong>Live:</strong>
+    <%= @page.live %>
+  </li>
+  <li>
+    <strong>Text Only:</strong>
+    <%= @page.text_only %>
+  </li>
+  <li>
+    <strong>Polling Frequency:</strong>
+    <%= PageScraperWeb.PageHelper.humanize_polling_frequency(@page.polling_frequency) %>
+  </li>
+  <li>
+    <strong>Latest Change Recorded at:</strong>
+    <%= if latest_change do %>
+      <%= Timex.format!(latest_change.inserted_at, date_time_format, :strftime) %>
+    <% else %>
+      n/a
+    <% end %>
+  </li>
+</ul>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Recorded at</th>
+      <th>Content</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= for change <- @page.page_changes do %>
+    <tr>
+      <td><%= Timex.format!(change.inserted_at, date_time_format, :strftime)  %></td>
+      <td><%= unless change.content, do: raw("<b>[EMPTY]</b>"), else: change.content %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,32 @@
+version: '3'
+services:
+  page_scraper_postgres:
+    image: postgres:11.5
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+  page_scraper_app:
+    build: .
+    stdin_open: true
+    tty: true
+    environment:
+      - TZ=Europe/London
+    ports:
+      - '80:4000'
+    volumes:
+      - .:/page_scraper
+    depends_on:
+      - page_scraper_postgres
+      - page_scraper_selenium_chrome
+  page_scraper_selenium_hub:
+    image: selenium/hub:3.141.59-vanadium
+  # TODO: Add a Healthcheck
+  page_scraper_selenium_chrome:
+    image: selenium/node-chrome:3.141.59-vanadium
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - page_scraper_selenium_hub
+    environment:
+      HUB_HOST: page_scraper_selenium_hub
+    ports:
+      - '5555:5555'

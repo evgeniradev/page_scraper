@@ -1,0 +1,37 @@
+<h4>All Pages <span><%= link "New Page", to: page_path(@conn, :new), class: "btn btn-default btn-xs" %></span></h4>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>URL</th>
+      <th>CSS Selector</th>
+      <th>Live</th>
+      <th>Text Only</th>
+      <th>Polling Frequency</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for page <- @pages do %>
+    <tr>
+      <td><%= page.name %></td>
+      <td><%= page.url %></td>
+      <td><%= page.css_selector %></td>
+      <td><%= page.live %></td>
+      <td><%= page.text_only %></td>
+      <td><%= PageScraperWeb.PageHelper.humanize_polling_frequency(page.polling_frequency) %></td>
+      <td class="text-right">
+        <%= if page.live do %>
+          <span><%= button "Stop", to: page_path(@conn, :update, page, %{page: %{live: false}}), method: :put, class: "btn btn-default btn-xs" %></span>
+        <% else %>
+          <span><%= button "Start", to: page_path(@conn, :update, page, %{page: %{live: true}}), method: :put, class: "btn btn-default btn-xs" %></span>
+        <% end %>
+        <span><%= link "Show", to: page_path(@conn, :show, page), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: page_path(@conn, :edit, page), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: page_path(@conn, :delete, page), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
